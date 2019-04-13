@@ -1,0 +1,114 @@
+<div class="row">
+  <div class="col-md-8">
+    <h3>
+      <strong>Referensi Satker</strong>
+      <button (click)="tampilkan()">Tampilkan</button>
+      <button (click)="cancleSatker()">Batal</button>
+      <button (click)="cetak()">Cetak</button>
+    </h3>
+    <app-ajax [ajax]="ajax"></app-ajax>
+
+    <form class="form-inline" *ngIf="ajax==1">
+      <div class="form-group">
+        <label for="exampleInputName2">Pencarian : </label>
+
+        <input type="text" class="form-control" name="listFilter" id="listFilter" [(ngModel)]="listFilter" placeholder="Mencari ">
+      </div>
+    </form>
+
+  </div>
+  <div class="col-md-2" *ngIf="ajax==1">
+      <br>
+      <br>
+      <br>
+      <button class="btn btn-success" (click)="rekamData()" data-widget="collapse" title="Rekam Data"><i class="glyphicon glyphicon-plus
+        glyphicon g"></i></button>
+      <button class="btn btn-danger" (click)="closeForm()"> <i class="glyphicon glyphicon-remove"></i> </button>
+  </div>
+</div>
+
+<div class="row"><br></div>
+<div class="row">
+  <div class="col-md-10">
+  <table class="table" *ngIf="ajax==1" width="50">
+
+    <tr>
+
+      <th style="width:50px">Kode
+        <span class="glyphicon sort-icon"></span>
+
+        <th style="width: 600px">Nama
+          <span class="glyphicon sort-icon"></span>
+        </th>
+      
+        <th style="width: 100x">Aksi
+          <span class="glyphicon sort-icon"></span>
+        </th>
+
+    </tr>
+    <tr *ngFor="let satker of listSatker | satkerFilter:listFilter | paginate: {id: 'satker', itemsPerPage: 10, currentPage: p }">
+
+      <td>{{satker.kdsatker}}</td>
+      <td>{{satker.nmsatker}}</td>
+      <td>
+        <a class="ubah btn btn-primary glyphicon glyphicon-edit" title="Ubah Data" (click)="editData(satker)" id="" role="button"></a>
+        <a class="hapus btn btn-danger glyphicon glyphicon-trash" title="Hapus Data" (click)="hapusData(satker)" id="" role="button"></a>
+        <a class="hapus btn btn-danger glyphicon glyphicon-zoom-in" title="Detail" (click)="detail(satker)" id="" role="button"></a>
+        
+      </td>
+
+
+    </tr>
+  </table>
+      <nav *ngIf="ajax==1"> 
+    <ul class="pagination"> <pagination-controls id="satker" (pageChange)="p = $event" style="cursor: pointer;"></pagination-controls></ul>
+  </nav>
+  <!--<ul class="pagination">
+
+</ul>-->
+</div>
+</div>
+
+
+<div class="modal fade" id="ctnRekam" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" *ngIf="isiSatker">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title" id="myModalLabel">R/U/H Satker</h4>
+    </div>
+    <form class="form-horizontal" name="formrekam">
+      <div class="modal-body">
+        <div class="form-group form-group-sm">
+          <label class="col-sm-2 control-label " for="formGroupInputSmall">Kode</label>
+          <div class="col-xs-3">
+            <input type="text" class="form-control" [(ngModel)]="isiSatker.kdsatker" id="kdsatker" name="kdsatker" placeholder="Kode" tabindex="1" >
+          </div>
+        </div>
+
+        <div class="form-group form-group-sm">
+          <label class="col-sm-2 control-label " for="formGroupInputSmall">Nama</label>
+          <div class="col-xs-6">
+            <input type="text" class="form-control" id="nmsatker" [(ngModel)]="isiSatker.nmsatker" name="nmsatker" placeholder="Nama" tabindex="2">
+
+          </div>
+
+        </div>
+
+    
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="simpan" (click)="saveData()" class="btn btn-primary" tabindex="9">Simpan</button>
+        <button type="button" id="batal" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+<app-pesan [pesan]="setPesan" (pilihan)='yesHapus($event)'></app-pesan>
+
+
+
+
+
+
